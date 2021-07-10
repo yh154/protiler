@@ -4,7 +4,10 @@
 
 Copyright (C) 2019, MD Anderson Cancer Center (whe3@mdanderson.org)
 
-
+## Note:
+```diff
+* This is a modified version of ProTiler program to detect hypo-sensitive regions instead of hyper-sensitive regions.
+```
 # ProTiler
 
 ProTiler is a novel computational method for fine-mapping of protein regions that are hyper-sensitive to CRISPR/Cas9 mediated gene knockouts(CKHS region) from high-throughput tiling-sgRNA functional screens. 
