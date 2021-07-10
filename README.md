@@ -1,8 +1,21 @@
-## Note:
+# Note:
 ```diff
 * This is a modified version of ProTiler program to detect hypo-sensitive regions instead of hyper-sensitive regions.
 ```
+
+# ProTiler (Original) 
+https://github.com/MDhewei/ProTiler-1.0.0
+
+ProTiler is a novel computational method for fine-mapping of protein regions that are hyper-sensitive to CRISPR/Cas9 mediated gene knockouts(CKHS region) from high-throughput tiling-sgRNA functional screens. 
+
+Also, ProTiler is able to predict CKHS regions for protein encoded by any given gene from other common protein features including conservation, domain annotation, secondary structures and PTMs distribution.
+
+If you use ProTiler please cite the following paper we published on Nature Communications:
+
+**He et al. De novo identification of essential protein domains from CRISPR-Cas9 tiling-sgRNA knockout screens. Nat Commun 10, 4547(2019).**
+
 # ProTiler (Modified)
+
 ## Installation
 
 ### Step1: Install Miniconda 3 (Linux)
@@ -22,7 +35,7 @@ $ conda config --add channels intel
 ### Step3: Install ProTiler 
 ```console
 $ conda create -n Protiler python=3.7 matplotlib=2.2.3 pandas=1.2.0 numpy=1.17.5 seaborn=0.9.0 scikit-learn r-essentials r-base r-stringr r-breakfast=1.0.0
-$ conda activate protiler
+$ conda activate Protiler
 $ git clone https://github.com/Poirier-Lab/protiler.git
 $ cd protiler
 $ python setup.py install
@@ -30,10 +43,15 @@ $ python setup.py install
 
 ## Usage 
 
-## Call: Call and visualize HS regions from CRISPR tiling screen data.
+## Call and visualize HS regions from CRISPR tiling screen data.
 
+#### Example to run protiler call
 
-### Protiler call take table file(.cvs or .txt) recording CRISPR tiling screen data as input.An example is shown as below: 
+```console
+protiler call -i sample.txt -g CREBBP -s 9,10,11 -o ProtilerOutput
+```
+
+#### Protiler call take table file(.cvs or .txt) recording CRISPR tiling screen data as input. An example is shown as below: 
 
 ![](ExampleFigures/InputTable.png)
 
@@ -82,13 +100,6 @@ $ python setup.py install
 
      Threshold to detect changing points using TGUH method',default='1.5'
 
-
-### Example to run protiler call
-
-```console
-protiler call -i sample.txt -g CREBBP -s 9,10,11 -o ProtilerOutput
-```
-
 ### Output
 
 #### 1. SegmentFile: A table record all the HS regions called by ProTiler for certain gene.
@@ -107,13 +118,3 @@ protiler call -i sample.txt -g CREBBP -s 9,10,11 -o ProtilerOutput
 ![](ExampleFigures/Segmentfigure_CREBBP.png)
 
 
-# ProTiler (Original) 
-https://github.com/MDhewei/ProTiler-1.0.0
-
-ProTiler is a novel computational method for fine-mapping of protein regions that are hyper-sensitive to CRISPR/Cas9 mediated gene knockouts(CKHS region) from high-throughput tiling-sgRNA functional screens. 
-
-Also, ProTiler is able to predict CKHS regions for protein encoded by any given gene from other common protein features including conservation, domain annotation, secondary structures and PTMs distribution.
-
-If you use ProTiler please cite the following paper we published on Nature Communications:
-
-**He et al. De novo identification of essential protein domains from CRISPR-Cas9 tiling-sgRNA knockout screens. Nat Commun 10, 4547(2019).**
