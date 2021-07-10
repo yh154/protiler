@@ -105,7 +105,7 @@ protiler call -i sample.txt -g CREBBP -s 9,10,11 -o ProtilerOutput
 #### 2. Figure4Visualization: Figure presenting signals, HS regions and other protein annotations. For example:
 
 ![](ExampleFigures/Segmentfigure_CREBBP.png)
-
+![](https://github.com/Poirier-Lab/protiler/blob/master/ExampleFigures/Segmentfigure_CREBBP.png)
 
 # ProTiler (Original) 
 https://github.com/MDhewei/ProTiler-1.0.0
