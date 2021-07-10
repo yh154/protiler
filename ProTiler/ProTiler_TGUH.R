@@ -43,7 +43,7 @@ is.efficient <- function(x, quant = 2/3)
   #if ((x[n+1]<=median(x[1:n])) | (x[n+1]<=median(x[(n+2):length(x)])))
     
   ## quantile funciton produces sample quantiles corresponding to the given probabilities
-  if ((x[n+1]<=quantile(x[1:n],quant)) | (x[n+1]<=quantile(x[(n+2):length(x)], quant)))
+  if ((x[n+1]>=quantile(x[1:n],quant)) | (x[n+1]>=quantile(x[(n+2):length(x)], quant)))
   {
     return(1)  ## The sgRNA is efficient if score smaller than 2/3 quantile value of neighbors in either side
   }
@@ -70,7 +70,7 @@ is.efficient <- function(x, quant = 2/3)
 #         (4) AA.est: the segmented scores along the amino acid positions
 #         (5) segments: A table contains all the information for the segments called by TGUH.
 
-protile.segmentation <- function(gene,value, AA.loc, half.size = 5, th.outlier = 2, th.tguh = 1.5)
+protile.segmentation <- function(gene, value, AA.loc, half.size = 5, th.outlier = 2, th.tguh = 1.5)
 {
   x <- value[order(AA.loc, decreasing = F)]  ##sort the input signals based on amino acids order(small to large)
   AA <- AA.loc[order(AA.loc,decreasing = F)] ##sort residue positions based on amino acids order(small to large)
@@ -175,7 +175,7 @@ protile.segmentation <- function(gene,value, AA.loc, half.size = 5, th.outlier =
                                            m=m))
   }
   
-  segments <- segments[order(segments$m),]
+  segments <- segments[order(segments$m, decreasing = T),]
   
   ## Judge whether a segment is HS region
   is.HS.site <- rep(F, nrow(segments))
@@ -184,22 +184,23 @@ protile.segmentation <- function(gene,value, AA.loc, half.size = 5, th.outlier =
   if (nrow(segments)>2)
   for (i in 2:(nrow(segments)-1))
   {
-    if (segments$m[i] > mean(v.filtered, na.rm=T))
+    if (segments$m[i] < mean(v.filtered, na.rm=T))
     {
       break
     }
     
-    m.lower <- weighted.mean(segments$m[1:(i-1)],segments$n[1:(i-1)])
-    m.higher <- weighted.mean(segments$m[(i+1):nrow(segments)],segments$n[(i+1):nrow(segments)])
+    m.higher <- weighted.mean(segments$m[1:(i-1)],segments$n[1:(i-1)])
+    m.lower <- weighted.mean(segments$m[(i+1):nrow(segments)],segments$n[(i+1):nrow(segments)])
     
-    if (segments$m[i]-m.lower < m.higher-segments$m[i])
+    if (segments$m[i]-m.lower > m.higher-segments$m[i])
+    #if(segments$m[i] > (m.higher + m.lower)/2)
     {
       is.HS.site[i] <- T
     }
     else
     {
         break
-      }
+    }
   }
   
   segments <- cbind(segments, is.HS.site)
@@ -242,7 +243,7 @@ CallHSRegion <- function(inputfile,gene,col,size,th1,th2)
        }
    
    df.child <- df.input[df.input$Symbol==gene,]
-   columns <- eval(parse(text=col))
+   columns <- eval(parse(text=col)) #col = "c(9,10,11)"
    #print(columns)
    my.df <- df.child[,columns]
    
@@ -279,5 +280,8 @@ CallHSRegion <- function(inputfile,gene,col,size,th1,th2)
 }
 
 ## Call HS region with user input parameters
+message("################")
+message("Running modified ProTile_TGUH.R")
+message("################")
 CallHSRegion(args[1],args[2],args[3],args[4],args[5],args[6])
       
